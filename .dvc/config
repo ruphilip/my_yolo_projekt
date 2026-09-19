@@ -1,0 +1,4 @@
+[core]
+    remote = mein_lokales_remote
+['remote "mein_lokales_remote"']
+    url = /Users/philipprutimann/Documents/ZHAW/CAS_ADML/MLOps/dvc_lokal_archiv
