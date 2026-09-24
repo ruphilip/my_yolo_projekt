@@ -1,0 +1,13 @@
+# data.yaml
+path: ./dataset  # dataset root dir
+train: images/train
+val: images/val
+
+names:
+  0: 1 Franken
+  1: 10 Rappen
+  2: 2 Franken
+  3: 20 Rappen
+  4: 5 Franken
+  5: 5 Rappen
+  6: 50 Rappen

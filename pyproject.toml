@@ -1,0 +1,11 @@
+[project]
+name = "my-yolo-projekt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mlflow>=3.16.1",
+    "pyyaml>=6.0.3",
+    "streamlit>=1.64.0",
+]
