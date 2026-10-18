@@ -9,7 +9,7 @@ st.title("🔍 YOLOv8 Objektkennung")
 st.write("Lade ein Bild hoch, um Objekte mit deinem lokal trainierten Modell zu erkennen.")
 
 # 2. Pfad zum trainierten Modell (Passe den Pfad an dein 'best.pt' an)
-MODEL_PATH = "./mlruns/1/d38a5f6388444f16b614b9ab0f597c45/artifacts/weights/best.pt"
+MODEL_PATH = "./mlruns/1/e7392944bc3d40419adbc7446cdcd811/artifacts/weights/best.pt"
 
 
 # Modell laden (wird gecacht, damit es nicht bei jedem Klick neu geladen wird)

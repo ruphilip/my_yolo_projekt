@@ -5,6 +5,9 @@ import sqlite3
 import pandas as pd
 from ultralytics import YOLO
 import warnings
+import math
+
+# https://docs.ultralytics.com/usage/cfg
 
 warnings.filterwarnings("ignore", category=UserWarning, module="torch.autograd.graph")
 
@@ -32,10 +35,14 @@ mlflow.set_tracking_uri("sqlite:///mlflow_runs/mlflow.db")
 mlflow.set_experiment("YOLO_Mac_Training")
 
 # --- TRAININGS-PARAMETER DEFINIEREN ---
-EPOCHS = 60
+EPOCHS = 80
 BATCH_SIZE = 16
 IMG_SIZE = 640
-YOLO_MODEL = "yolov8s.pt"
+YOLO_MODEL = "yolov8n.pt"
+DROPOUT = 0.5
+WEIGHT_D = 0.0005
+OPTIMIZER = 'auto'
+
 
 # 2. Das aktuelle Git-Tag (z.B. v1.0) auslesen
 try:
@@ -45,7 +52,7 @@ except Exception:
     
 if float(newest_tag[1:4])>=float(git_tag[1:]):
     print(float(newest_tag[1:4])>=float(git_tag[1:]))
-    git_tag = 'v' + str(float(newest_tag[1:4])+0.1)
+    git_tag = 'v' + str(math.ceil((float(newest_tag[1:4])+float(0.1))*10)/10)
 
 # 3. MLflow Run starten
 with mlflow.start_run(run_name=f"YOLO_Train_{git_tag}") as run:
@@ -59,6 +66,9 @@ with mlflow.start_run(run_name=f"YOLO_Train_{git_tag}") as run:
     mlflow.log_param("image_size", IMG_SIZE)
     mlflow.log_param("yolo_model", YOLO_MODEL)
     mlflow.log_param("device", "mps")
+    mlflow.log_param("dropout", DROPOUT)
+    mlflow.log_param("weight_decay", WEIGHT_D)
+    mlflow.log_param("optimizer", OPTIMIZER)
     
     # 4. YOLO Modell laden
     model = YOLO(YOLO_MODEL) 
@@ -72,10 +82,27 @@ with mlflow.start_run(run_name=f"YOLO_Train_{git_tag}") as run:
         workers=4,          # Optimal für M-Champs Core-Architektur
         batch=BATCH_SIZE,           # Ausgewogen für den Mac Unified Memory
         cache=True,          # Nutzt den schnellen RAM des Mac aus
-        deterministic=False
+        deterministic=False,
+        dropout=DROPOUT, 
+        weight_decay=WEIGHT_D,
+        optimizer = OPTIMIZER
     )
     
-    best_model = results.save_dir / "weights" / "best.pt"
-
-    mlflow.log_artifact(str(best_model), artifact_path="model")
+    # Pfad zu den besten Gewichten abgreifen
+    best_model_path = results.save_dir / "weights" / "best.pt"
+    
+    # 1. Das trainierte YOLO-Modell laden
+    trained_model = YOLO(str(best_model_path))
+    
+    # 2. Framework-spezifisches PyTorch-Logging importieren und nutzen
+    import mlflow.pytorch
+    
+    # Wir loggen das zugrundeliegende PyTorch-Modell von YOLO (.model)
+    mlflow.pytorch.log_model(
+        pytorch_model=trained_model.model, 
+        artifact_path=f"YOLO_Train_{git_tag}".replace(".","_"),
+        serialization_format="pickle"
+    )
+    
+    print(f"Erfolgreich geloggt! Das Modell befindet sich in: {best_model_path}")
 
