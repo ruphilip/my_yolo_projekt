@@ -5,7 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "great-expectations>=1.24.1",
+    "label-studio-converter>=0.0.59",
+    "label-studio-sdk>=2.0.19",
     "mlflow>=3.16.1",
+    "pytest>=9.1.1",
     "pyyaml>=6.0.3",
     "sahi>=0.12.8",
     "streamlit>=1.64.0",

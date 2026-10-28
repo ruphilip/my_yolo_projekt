@@ -2,9 +2,8 @@
 
 # 1. Benutzer nach einer Beschreibung für das Update fragen
 echo "Bitte gib eine kurze Beschreibung für diese Version ein:"
-read -r commit_msg
 
-if [ -z "$commit_msg" ]; then
+if [ -z "Neue Verion der Daten oder weitere Daten dazu" ]; then
     echo "Fehler: Beschreibung darf nicht leer sein! Abbruch."
     exit 1
 fi
