@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "apache-airflow>=3.3.2",
     "great-expectations>=1.24.1",
     "label-studio-converter>=0.0.59",
     "label-studio-sdk>=2.0.19",

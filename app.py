@@ -26,6 +26,12 @@ from config import *
 from label_studio_export import ls_export
 from utils import *
 
+from eval_view import render_evaluation      # zu den Imports
+
+                
+from models_view import render_models      # zu den Imports
+
+
 
 # ---------------------------------------------------------------------------
 # Registry
@@ -284,3 +290,8 @@ def panel():
 # Automatische Aktualisierung nur, solange ein Dienst gerade startet
 auto_refresh = POLL_SECONDS if st.session_state.starting else None
 st.fragment(run_every=auto_refresh)(panel)()
+
+render_evaluation(BASE_DIR)                 # ganz ans Ende der Datei, nach st.fragment(...)(panel)()
+
+render_models(BASE_DIR)                    # z. B. vor render_evaluation(BASE_DIR)
+

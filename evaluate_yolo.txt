@@ -1,0 +1,14 @@
+Ich habe evaluate_yolo.py angepasst: Das Script lädt jetzt direkt die best.pt aus dem MLflow-Artefaktordner statt eines Modell-Artefakts. Auch diese Version konnte ich nicht ausführen.
+
+Dein Pfad mlruns/1/a0389a22e3df445e83d5f01ca1223081/artifacts/weights/best.pt ist als Standard eingetragen. Du kannst also einfach starten:
+
+bash
+python evaluate_yolo.py --noise-std 10 25 50
+
+Den Pfad kannst du bei Bedarf überschreiben:
+
+bash
+python evaluate_yolo.py --weights mlruns/1/<anderer_run>/artifacts/weights/best.pt
+python evaluate_yolo.py --run-id <RUN_ID>     # sucht best.pt unter mlruns/*/<RUN_ID>/artifacts/weights/
+
+Die Run-ID wird aus dem Pfad abgeleitet. Mit --log-mlflow landen die Ergebnisse deshalb wieder im gleichen Run in deiner mlflow.db. Die Auswertung selbst (Metriken, 10 schwierigste Bilder, Rausch-Vergleich) ist unverändert.
