@@ -32,10 +32,10 @@ mlflow.set_tracking_uri("sqlite:///mlflow_runs/mlflow.db")
 mlflow.set_experiment("YOLO_Mac_Training")
 
 # --- TRAININGS-PARAMETER DEFINIEREN ---
-EPOCHS = 80
+EPOCHS = 100
 BATCH_SIZE = 16
 IMG_SIZE = 640
-YOLO_MODEL = "yolov8n.pt"
+YOLO_MODEL = "yolov8s.pt"
 DROPOUT = 0.5
 WEIGHT_D = 0.0005
 OPTIMIZER = 'auto'
